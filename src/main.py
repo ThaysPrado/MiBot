@@ -17,10 +17,8 @@ async def on_ready():
 def count_attempts(user):
     global last_user, count_attempt
     if last_user == user:
-        print(user)
         count_attempt += 1
     else:
-        print(user)
         last_user = user
         count_attempt = 0
 
@@ -28,13 +26,13 @@ def get_message_about_attempt():
     if count_attempt == 1:
         return "**Você só tem mais uma chance hein!**"
     
-    if count_attempt == 2:
+    if count_attempt >= 2:
         return "**Bora escolher! Acabaram suas chances!**"
     
     return ""
 
-def should_not_response():
-    if count_attempt >= 3:
+def should_not_response(user):
+    if last_user == user and count_attempt >= 2:
         return True
     
     return False
@@ -46,13 +44,12 @@ async def on_message(message):
     
     if message.content.startswith('/hello'):
         await message.channel.send(service.get_introduction())
-    
-    count_attempts(message.author)
 
-    if should_not_response():
+    if should_not_response(message.author):
         await message.channel.send("Ops, suas chances acabaram. Hora de escolher! Ou tente mais tarde")
         return
-
+    
+    count_attempts(message.author)
     about_attempts = get_message_about_attempt()
 
     if message.content.startswith('/food'):
