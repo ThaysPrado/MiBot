@@ -29,6 +29,5 @@ def get_introduction():
     text = '''Oie, sou a **MiBot!**
 Com o comando ``/food`` você pode sortear uma sugestão de comida.
 Com o comando ``/drink`` você pode sortear uma sugestão de bebida.
-Cuidado, para não termos problemas com as apis usadas, optei por limitar a quantidade de tentativas por usuário.
     '''
     return(text)
