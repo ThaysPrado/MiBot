@@ -34,7 +34,7 @@ def get_message_about_attempt():
     return ""
 
 def should_not_response():
-    if count_attempt >= 2:
+    if count_attempt >= 3:
         return True
     
     return False
@@ -46,22 +46,21 @@ async def on_message(message):
     
     if message.content.startswith('/hello'):
         await message.channel.send(service.get_introduction())
+    
+    count_attempts(message.author)
 
-    if message.content.startswith('/food') or message.content.startswith('/drink'):
-        count_attempts(message.author)
+    if should_not_response():
+        await message.channel.send("Ops, suas chances acabaram. Hora de escolher! Ou tente mais tarde")
+        return
 
-        if should_not_response():
-            await message.channel.send("Ops, suas chances acabaram. Hora de escolher! Ou tente mais tarde")
-            return
+    about_attempts = get_message_about_attempt()
 
-        about_attempts = get_message_about_attempt()
+    if message.content.startswith('/food'):
+        suggest = service.get_food()
+        await message.channel.send(suggest + "\n\n" + about_attempts)
 
-        if message.content.startswith('/food'):
-            suggest = service.get_food()
-            await message.channel.send(suggest + "\n\n" + about_attempts)
-
-        if message.content.startswith('/drink'):
-            suggest = service.get_drink()
-            await message.channel.send(suggest + "\n\n" + about_attempts)
+    if message.content.startswith('/drink'):
+        suggest = service.get_drink()
+        await message.channel.send(suggest + "\n\n" + about_attempts)
 
 client.run(SECRET_KEY)
