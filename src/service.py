@@ -8,10 +8,14 @@ def get_food():
     response = requests.get(mealAPI)
     json_data = json.loads(response.text)
     meal = json_data["meals"][0]
-    area = meal["strArea"]
-    mealSuggest = meal["strMeal"]
-    source = meal["strSource"]
-    text = "**Sugestão do MiBot**:\nTipo: " + area + "\nPrato: " + mealSuggest + "\nReceita: " + source
+
+    text = "**Sugestão do MiBot**:"
+    if meal["strArea"] is not None:
+        text += "\nTipo: "+ meal["strArea"]
+    if meal["strMeal"] is not None:
+        text += "\nPrato: " + meal["strMeal"]
+    if meal["strSource"] is not None:
+        text += "\nReceita: " + meal["strSource"]
     return(text)
 
 def get_drink():

@@ -10,6 +10,8 @@ SECRET_KEY = os.getenv("TOKEN")
 last_user = ""
 count_attempt = 0
 
+channel_list = [1009650829738922056]
+
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
@@ -37,9 +39,19 @@ def should_not_response():
     
     return False
 
+def should_break(author, channel):
+    if author == client.user:
+        return True
+
+    for id in channel_list:
+        if id == channel:
+            return False
+    
+    return True
+
 @client.event
 async def on_message(message):
-    if message.author == client.user or message.channel.id != 'testes':
+    if should_break(message.author, message.channel.id):
         return
     
     if message.content.startswith('/hello'):
