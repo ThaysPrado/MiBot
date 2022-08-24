@@ -3,7 +3,10 @@ import os
 from dotenv import load_dotenv
 import service
 
-client = discord.Client(intents=discord.Intents.default())
+intents = discord.Intents.default()
+intents.messages = True
+
+client = discord.Client(intents=intents)
 load_dotenv(os.path.join(os.getcwd(), '.env'))
 SECRET_KEY = os.getenv("TOKEN")
 
