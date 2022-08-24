@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import service
 
 intents = discord.Intents.default()
-intents.messages = True
+intents.message_content = True
 
 client = discord.Client(intents=intents)
 load_dotenv(os.path.join(os.getcwd(), '.env'))
